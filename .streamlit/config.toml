@@ -1,0 +1,16 @@
+[theme]
+base = "dark"
+primaryColor = "#F2711C"            # flame orange, the only accent colour
+backgroundColor = "#14171C"         # dark neutral
+secondaryBackgroundColor = "#1E232B"
+textColor = "#E6E8EB"
+font = "'IBM Plex Sans':https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap, sans-serif"
+codeFont = "'IBM Plex Mono':https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap, monospace"
+codeTextColor = "#E6E8EB"
+codeBackgroundColor = "#1E232B"
+linkColor = "#F2711C"
+borderColor = "#2E3540"
+chartCategoricalColors = ["#F2711C", "#8A919C", "#5C636E", "#B4BAC2"]
+
+[browser]
+gatherUsageStats = false
