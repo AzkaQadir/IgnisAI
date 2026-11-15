@@ -57,6 +57,7 @@
   "pressure_psi": null,
   "airflow_cms": null,
   "fuel": [
+   "methane",
    "ethylene"
   ],
   "fuel_phase": [
@@ -155,10 +156,11 @@
   },
   "airflow_cms": null,
   "fuel": [
-   "PMMA (acrylic)"
+   "methane",
+   "ethylene"
   ],
   "fuel_phase": [
-   "solid"
+   "gas"
   ],
   "fuel_geometry": [
    "Porous burner"
@@ -1106,7 +1108,9 @@
   },
   "airflow_cms": null,
   "fuel": [],
-  "fuel_phase": [],
+  "fuel_phase": [
+   "liquid"
+  ],
   "fuel_geometry": [
    "Droplet"
   ],
@@ -1416,9 +1420,7 @@
   "fuel_phase": [
    "solid"
   ],
-  "fuel_geometry": [
-   "Droplet"
-  ],
+  "fuel_geometry": [],
   "fuel_size": null,
   "measurements": [
    "Smoke detectors",
@@ -1490,9 +1492,7 @@
   "airflow_cms": null,
   "fuel": [],
   "fuel_phase": [],
-  "fuel_geometry": [
-   "Droplet"
-  ],
+  "fuel_geometry": [],
   "fuel_size": null,
   "measurements": [
    "Video imaging",

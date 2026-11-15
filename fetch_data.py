@@ -37,7 +37,9 @@ FUELS = [
     (r"ethanol", "ethanol", "liquid"),
     (r"propanol", "propanol", "liquid"),
     (r"hexanol", "hexanol", "liquid"),
-    (r"methane", "methane", "gas"),
+    (r"methane|\bCH4\b", "methane", "gas"),
+    (r"\bC2H4\b", "ethylene", "gas"),
+    (r"\bC3H8\b", "propane", "gas"),
     (r"\bethane\b", "ethane", "gas"),
     (r"ethylene", "ethylene", "gas"),
     (r"propane", "propane", "gas"),
@@ -123,6 +125,10 @@ DILUENT_CONTEXT = re.compile(r"dilu|suppress|extingu|inert|\badd(ed|ing)\b|balan
 
 # Gravity notes the challenge statement gives that are not in the PSI record text.
 CHALLENGE_GRAVITY_NOTES = {"PSI-22": "electric field used to mimic partial gravity (challenge statement)"}
+
+# The challenge statement says BRE burned gaseous fuels to emulate solid materials, so solid
+# materials named in its record are emulation targets, not fuels.
+GAS_EMULATORS = {"ACME BRE"}
 
 # Values the challenge statement gives that are not in the PSI record text.
 CHALLENGE_OXYGEN = {
@@ -258,7 +264,17 @@ def build_record(summary):
     full_text = " ".join([title, keywords, *sections.values()])
     sents = sentences(full_text)
 
-    fuels = [(name, phase) for pat, name, phase in FUELS if re.search(pat, full_text, re.I)]
+    fuels = list(dict.fromkeys(
+        (name, phase) for pat, name, phase in FUELS if re.search(pat, full_text, re.I)
+    ))
+    if acronym in GAS_EMULATORS:
+        fuels = [f for f in fuels if f[1] == "gas"]
+    geometry = keyword_list(full_text, GEOMETRY)
+    fuel_droplets = any(phase == "liquid" for _, phase in fuels) or re.search(
+        r"droplet (combustion|burning|flame)|fuel droplet|burning droplet|\bMDCA\b|Droplet Combustion App",
+        f"{full_text} {d.get('experimentHardware') or ''}", re.I)
+    if "Droplet" in geometry and not fuel_droplets:
+        geometry.remove("Droplet")  # "droplet" here refers to smoke or soot, not fuel
     pi = next(
         (f"{c.get('firstName', '')} {c.get('lastName', '')}".strip()
          for c in d.get("contacts", [])
@@ -305,8 +321,11 @@ def build_record(summary):
         "pressure_psi": pressure_field(sents),
         "airflow_cms": airflow,
         "fuel": [f[0] for f in fuels],
-        "fuel_phase": sorted({f[1] for f in fuels}),
-        "fuel_geometry": keyword_list(full_text, GEOMETRY),
+        # The challenge statement: MDCA experiments burned droplets of liquid fuel.
+        "fuel_phase": sorted({f[1] for f in fuels}) or (
+            ["liquid"] if re.search(r"\bMDCA\b|Droplet Combustion App", d.get("experimentHardware") or "") else []
+        ),
+        "fuel_geometry": geometry,
         "fuel_size": fuel_size,
         "measurements": keyword_list(full_text, MEASUREMENTS),
         "pillar": pillar,

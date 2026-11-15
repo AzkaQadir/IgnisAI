@@ -125,7 +125,7 @@ Answers depend on the model and can change between runs.
 - Many values are missing because the text does not state them. Only 2 of 24 records report both
   oxygen concentration and pressure. The evidence-gap chart shows this.
 - No record states which conditions stayed fixed between tests, so "Fixed conditions" shows
-  "Not reported in source" for now. Fuel sizes are found for 6 records.
+  "Not reported in source" for now. Fuel sizes are found for 5 records.
 - Values are found by text rules. They can miss a value or, rarely, pick up a wrong one. Check
   the source sentence on the investigation page.
 - The ranking is a rule of thumb, not a scientific measure.
